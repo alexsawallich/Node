@@ -1,0 +1,168 @@
+<?php
+    $this->headtitle($this->translate('Nodes'));
+    $form->prepare();
+    $typeMap = [
+        'mvc' => $this->translate('MVC-Node'),
+        'content' => $this->translate('Content-Node'),
+        'redirect' => $this->translate('Redirect-Node'),
+    ];
+?>
+<div class="page-header">
+    <button type="button" class="btn btn-sm btn-info pull-right" title="<?php echo $this->translate('Click for help'); ?>" data-toggle="modal" data-target="#help"><i class="glyphicon glyphicon-question-sign"></i></button>
+    <h1><?php echo $this->translate('Nodes'); ?></h1>
+</div>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h2 class="panel-title"><?php echo $this->translate('Filters');?></h2>
+    </div>
+    <div class="panel-body">
+        <?php echo $this->form()->openTag($form->setAttribute('class', 'form-inline')); ?>
+            <?php foreach ($form as $element): ?>
+                <div class="form-group <?php if ($element->getMessages()) echo ' has-errors'; ?>">
+                    <?php if ($element instanceof \Zend\Form\element\Button): ?>
+                        <?php if ('submit' == $element->getName()): ?>
+                            <?php echo $this->formelement($element->setAttribute('class', 'btn btn-default btn-sm')); ?>
+                        <?php else: ?>
+                            <?php echo $this->formelement($element->setAttribute('class', 'btn btn-danger btn-sm')); ?>
+                        <?php endif; ?>
+                    <?php else: ?>
+                        <?php echo $this->formlabel($element); ?>
+                        <?php if ('search' == $element->getName()) $element->setAttribute('placeholder', $this->translate('ID, Name or URL-Path')); ?>
+                        <?php echo $this->formelement($element->setAttribute('class', 'form-control input-sm')); ?>
+                        <?php echo $this->formelementerrors($element); ?>
+                    <?php endif; ?>
+                </div>
+            <?php endforeach; ?>
+        <?php echo $this->form()->closeTag(); ?>
+    </div>
+</div>
+<div class="panel panel-default">
+    <div class="panel-heading clearfix">
+        <h2 class="panel-title pull-left"><?php echo $this->translate('Overview'); ?></h2>
+        <a href="<?php echo $this->basepath().$this->url('zfcadmin/node/add'); ?>" class="btn btn-primary btn-xs pull-right"><i class="glyphicon glyphicon-plus"></i> New</a>
+    </div>
+    <form action="<?php echo $this->basepath().$this->url('zfcadmin/node/batch'); ?>" method="post">
+        <table class="table table-striped table-hover">
+            <colgroup>
+                <col style="width: 25px;">
+                <col style="width: 50px;">
+                <col>
+                <?php if (true == $enableAccessCounter): ?>
+                    <col style="width: 110px;">
+                    <col style="width: 150px;">
+                <?php endif; ?>
+                <col style="width: 120px;">
+                <col style="width: 80px;">
+            </colgroup>
+            <thead>
+                <tr>
+                    <th class="text-center"><input type="checkbox" data-toggle="check_all"></th>
+                    <th class="text-right"><?php echo $this->translate('ID'); ?></th>
+                    <th><?php echo $this->translate('Name'); ?></th>
+                    <?php if (true == $enableAccessCounter): ?>
+                        <th class="text-right"><?php echo $this->translate('#Accesses'); ?></th>
+                        <th class="text-right"><?php echo $this->translate('Last Access'); ?></th>
+                    <?php endif; ?>
+                    <th><?php echo $this->translate('Node-Type'); ?></th>
+                    <th class="text-right"><?php echo $this->translate('Options'); ?></th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach($nodes as $node): /* @var $node \Node\Entity\NodeInterface */ ?>
+                    <tr>
+                        <td class="text-center"><input type="checkbox" name="id[]" value="<?php echo $node->getNodeId(); ?>"></td>
+                        <td class="text-right"><?php echo $this->escapehtml($node->getNodeId()); ?></td>
+                        <td>
+                            <a href="<?php echo $this->basepath().$this->url('zfcadmin/node/edit', ['id' => $node->getNodeId()]); ?>"><strong><?php echo $this->escapehtml($node->getNodeName()); ?></strong></a><br>
+                            <small class="text-muted"><?php echo $this->escapehtml($node->getNodeRoute()); ?></small>
+                        </td>
+                        <?php if (true == $enableAccessCounter): ?>
+                            <td class="text-right"><?php echo $this->escapehtml($node->getNodeAccessCount()); ?></td>
+                            <td class="text-right">
+                                <?php if (null != $node->getNodeAccessDate()): ?>
+                                    <?php echo $this->dateformat(new \DateTime($node->getNodeAccessDate()), 2, 2); ?>
+                                <?php else: ?>
+                                    <span class="text-muted"><?php echo $this->translate('never'); ?></span>
+                                <?php endif; ?>
+                            </td>
+                        <?php endif; ?>
+                        <td>
+                            <?php echo $typeMap[$node->getNodeType()]; ?>
+                            <?php if('content' == $node->getNodeType()): ?>
+                                <br><small class="text-muted"><?php echo sprintf($this->translate('ID: %s'), $node->getContentId()); ?></small>
+                            <?php endif; ?>
+                        </td>
+                        <td class="text-right">
+                            <div class="btn-group text-left pull-right">
+                                <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
+                                    <i class="glyphicon glyphicon-cog"></i>
+                                    <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li><a href="<?php echo $this->basepath().$this->url('zfcadmin/node/edit', ['id' => $node->getNodeId()]); ?>"><?php echo $this->translate('Edit'); ?></a></li>
+                                    <?php if ('content' != $node->getNodeType()): ?>
+                                        <li><a href="<?php echo $this->basepath().$this->url('zfcadmin/node/delete', ['id' => $node->getNodeId()]); ?>"><?php echo $this->translate('Delete'); ?></a></li>
+                                    <?php endif; ?>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+        <div class="panel-body clearfix">
+            <div class="form-inline pull-left">
+                &nbsp;&nbsp;└ <?php echo $this->translate('marked'); ?>
+                <select name="action" class="form-control input-sm">
+                    <option></option>
+                    <option value="delete"><?php echo $this->translate('Delete'); ?></option>
+                </select>
+                <input type="submit" name="submit" value="<?php echo $this->translate('Do it!'); ?>" class="btn btn-primary btn-sm">
+            </div>
+            <div class="pull-right">
+                <?php echo $this->paginationcontrol($nodes, null, 'node/backend/partial/paginationcontrol.phtml', ['route' => $this->url('zfcadmin/node')]); ?>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal fade" id="help">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><?php echo $this->translate('Help'); ?></h4>
+            </div>
+            <div class="modal-body">
+                <?php echo $this->translate('<p>Jeglicher Inhalt, der im Frontend sichtbar sein soll, wird über sogenannte Nodes realisiert.
+                    Wird ein Inhalt angelegt, erstellt das System im Hintergrund automatisch einen <strong>Content-Node</strong>.
+                    Content-Nodes können über diese Maske nicht bearbeitet oder gelöscht werden, da sie fest mit dem jeweiligen Inhalt verbunden sind.
+                    Wird jedoch direkt der entsprechende Inhalt bearbeitet oder gelöscht, wird der zugehörige Content-Node ebenfalls aktualisiert bzw. gelöscht.</p>
+                    <p>Es ist auch möglich <strong>MVC-Nodes</strong> anzulegen.
+                    Diese können benutzt werden um eine bestimmte Action im Frontend über einen URL verfügbar zu machen.
+                    Derartige Nodes können hier erstellt, bearbeitet und gelöscht werden.</p>'); ?>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"><?php echo $this->translate('Ok, got it!'); ?></button>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function() {
+    	$('input[data-toggle="check_all"]').on('change', function(event) {
+        	var checked = $(this).prop('checked');
+        	var $target = $('input[name="id\[\]"]');
+
+        	$target.prop('checked', checked);
+    	});
+
+    	var $loader = $('<div style="border-radius: 3px; border: 1px solid #325d88; width: 200px; height: 100px; text-align: center; vertical-align: middle; position: fixed; top: 50%; left: 50%; margin: -50px 0 0 -100px; background: rgba(255, 255, 255, 0.5); z-index: 99999; line-height: 100px;"><img src="/themes/admin/gfx/ajax-loader.gif" alt=""></div>');
+
+    	$('form').on('submit', function(event) {
+        	$('body').append($loader);
+    	});
+    	$('a').on('click', function(event) {
+        	$('body').append($loader);
+    	});
+    });
+</script>

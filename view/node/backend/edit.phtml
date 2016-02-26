@@ -1,0 +1,83 @@
+<?php
+    $this->headtitle($this->translate('Edit Node'));
+    $this->headtitle($this->translate('Nodes'));
+    $form->prepare();
+?>
+<div class="page-header">
+    <h1><?php echo $this->translate('Edit Node'); ?> <small><?php echo $this->escapehtml($node->getNodeName()); ?></small></h1>
+</div>
+<?php echo $this->form()->openTag($form); ?>
+    <div class="panel panel-default">
+        <div class="panel-heading clearfix">
+            <h2 class="panel-title pull-left"><?php echo $this->translate('Data'); ?></h2>
+            <div class="btn-group pull-right">
+                <?php echo $this->formsubmit($form->get('submit')->setAttributes(['class' => 'btn btn-xs btn-success', 'value' => $form->get('submit')->getLabel()])); ?>
+                <a href="<?php echo $this->basepath().$this->url('zfcadmin/node'); ?>" class="btn btn-xs btn-danger"><?php echo $this->translate('Cancel'); ?></a>
+            </div>
+        </div>
+        <div class="panel-body">
+            <?php foreach($form as $element): ?>
+                <?php if('submit' == $element->getName()) continue; ?>
+                <?php echo $this->partial('node/backend/partial/form-element.phtml', ['element' => $element]); ?>
+            <?php endforeach; ?>
+        </div>
+    </div>
+<?php echo $this->form()->closeTag(); ?>
+<script type="text/javascript">
+    $(document).ready(function() {
+        var $controllerSelect = $('[name="node_route_config\[controller\]"]');
+        var $actionInput = $('[name="node_route_config\[action\]"]');
+    	var action = $actionInput.val();
+        var $actionSelect = $('<select name="node_route_config[action]" class="form-control"></select>');
+    	$actionInput.before($actionSelect).remove();
+
+    	var loadActionList = function($controllerSelect) {
+        	var controller = $controllerSelect.val();
+        	if('' == controller) {
+            	$actionSelect.html('').attr('disabled', 'disabled');
+            	return false;
+      		}
+        	var $loader = $('<img src="/themes/admin/gfx/ajax-loader.gif" alt="Lade...">');
+        	$actionSelect.before($loader);
+            var url = '<?php echo $this->url('zfcadmin/node/load-actions'); ?>';
+        	var data = {controller: controller};
+        	$.ajax({
+            	'url': url,
+            	'type': 'POST',
+            	'data': data,
+            	'success': function(data) {
+                	var actions = data.actions;
+                    $actionSelect.html('<option value=""><?php echo $this->translate('-- Select --'); ?></option>').removeAttr('disabled');
+                    for(i = 0; i < actions.length; ++i) {
+                        $actionSelect.append('<option value="' + actions[i] + '">' + actions[i] + '</option>');
+                    }
+
+                    if (action) {
+                        $actionSelect.val(action);
+                    }
+                	
+                	$loader.fadeOut('slow', function() {
+                    	$(this).remove();
+                	});
+            	}
+        	});
+    	}
+
+    	$controllerSelect.on('change', function(event) {
+        	loadActionList($(this));
+    	});
+    	loadActionList($controllerSelect);
+    });
+</script>
+<script type="text/javascript">
+    $(document).ready(function() {
+    	var $loader = $('<div style="border-radius: 3px; border: 1px solid #325d88; width: 200px; height: 100px; text-align: center; vertical-align: middle; position: fixed; top: 50%; left: 50%; margin: -50px 0 0 -100px; background: rgba(255, 255, 255, 0.5); z-index: 99999; line-height: 100px;"><img src="/themes/admin/gfx/ajax-loader.gif" alt=""></div>');
+
+    	$('form').on('submit', function(event) {
+        	$('body').append($loader);
+    	});
+    	$('a').on('click', function(event) {
+        	$('body').append($loader);
+    	});
+    });
+</script>

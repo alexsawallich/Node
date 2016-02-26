@@ -1,0 +1,29 @@
+<?php if ($this->pageCount): ?>
+<nav>
+    <h1 class="hidden"><?php echo $this->translate('Paginator'); ?></h1>
+    <ul class="pagination">
+        <?php if (isset($this->previous)): ?>
+            <li><a href="<?php echo $this->serverurl().$this->basepath().$this->route; ?>?page=<?php echo $this->previous; ?>">&laquo;</a></li>
+        <?php else: ?>
+            <li class="disabled"><a href="<?php echo $this->serverurl().$this->basepath().$this->route; ?>?page=<?php echo $this->previous; ?>">&laquo;</a></li>
+        <?php endif; ?>
+        
+        <?php foreach ($this->pagesInRange as $page): ?>
+            <?php if ($page != $this->current): ?>
+                <li><a href="<?php echo $this->serverurl().$this->basepath().$this->route; ?>?page=<?php echo $page; ?>"><?php echo $page; ?></a></li>
+            <?php else: ?>
+                <li class="active"><a href="<?php echo $this->serverurl().$this->basepath().$this->route; ?>?page=<?php echo $page; ?>">
+                    <?php echo $page; ?>
+                </a></li>
+            <?php endif; ?>
+        <?php endforeach; ?>
+        
+        <!-- Next page link -->
+        <?php if (isset($this->next)): ?>
+            <li><a href="<?php echo $this->serverurl().$this->basepath().$this->route; ?>?page=<?php echo $this->next; ?>">&raquo;</a></li>
+        <?php else: ?>
+            <li class="disabled"><a href="<?php echo $this->serverurl().$this->basepath().$this->route; ?>?page=<?php echo $this->next; ?>">&raquo;</a></li>
+        <?php endif; ?>
+    </ul>
+</nav>
+<?php endif; ?>

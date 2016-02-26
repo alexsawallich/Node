@@ -1,0 +1,24 @@
+<?php if ($element instanceof \Zend\Form\Fieldset): ?>
+    <fieldset>
+        <legend><?php echo $element->getLabel(); ?></legend>
+        <?php foreach ($element as $subElement): ?>
+            <?php echo $this->partial('node/backend/partial/form-element.phtml', ['element' => $subElement]); ?>
+        <?php endforeach; ?>
+    </fieldset>
+<?php else: ?>
+    <div class="form-group<?php if($element->getMessages()) echo ' has-error'; ?>">
+        <?php echo $this->formlabel($element->setLabelAttributes(['class' => 'control-label'])); ?>
+        <?php if('node_route' == $element->getName()): ?>
+            <div class="input-group">
+                <span class="input-group-addon"><?php echo $this->serverurl().$this->basepath(); ?></span>
+                <?php echo $this->formelement($element->setAttribute('class', 'form-control')); ?>
+            </div>
+        <?php else: ?>
+            <?php echo $this->formelement($element->setAttribute('class', 'form-control')); ?>
+        <?php endif; ?>
+        <?php echo $this->formelementerrors($element); ?>
+        <?php if($element->getOption('description')): ?>
+            <p class="help-block"><?php echo $element->getOption('description'); ?></p>
+        <?php endif; ?>
+    </div>
+<?php endif; ?>

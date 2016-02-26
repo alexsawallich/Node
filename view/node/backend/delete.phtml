@@ -1,0 +1,56 @@
+<?php
+    $count = count($nodes);
+    if ($count > 1) {
+        $title = $this->translate('Delete Nodes');
+    } else {
+        $title = $this->translate('Delete Node');
+    }
+    $this->headtitle($title);
+    $this->headtitle($this->translate('Nodes'));
+?>
+<div class="node-header">
+    <h1><?php echo $title; ?></h1>
+</div>
+<form action="<?php echo $this->basepath().$this->url('zfcadmin/node/delete'); ?>" method="post">
+    <div class="panel panel-default">
+        <div class="panel-heading clearfix">
+            <h2 class="panel-title pull-left"><?php echo $this->translate('Confirm deletion'); ?></h2>
+            <div class="btn-group pull-right">
+                <input type="submit" name="delete" value="<?php echo $this->translate('Yes, Delete'); ?>" class="btn btn-xs btn-danger">
+                <a href="<?php echo $this->basepath().$this->url('zfcadmin/node'); ?>" class="btn btn-xs btn-success"><?php echo $this->translate('No, Cancel'); ?></a>
+            </div>
+        </div>
+        <?php if($count > 1): ?>
+            <div class="panel-body">
+                <p><?php echo $this->translate('Are you sure you want to delete the following nodes?'); ?></p>
+            </div>
+            <table class="table table-striped">
+                <tbody>
+                    <?php foreach($nodes AS $node): /* @var $node \Node\Entity\NodeInterface */ ?>
+                        <tr>
+                            <td><strong><?php echo $this->escapehtml($node->getNodeName()); ?></strong> <input name="id[]" type="hidden" value="<?php echo $node->getNodeId(); ?>"></td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        <?php else: ?>
+            <div class="panel-body">
+                <p><?php echo sprintf($this->translate('Are you sure you want to delete the node: %s?'), $this->escapehtml($nodes->current()->getNodeName())); ?></p>
+                <input name="id[]" type="hidden" value="<?php echo $nodes->current()->getNodeId(); ?>">
+            </div>
+        <?php endif; ?>
+    </div>
+</form>
+<script type="text/javascript">
+    $(document).ready(function() {
+    	var $loader = $('<div style="border-radius: 3px; border: 1px solid #325d88; width: 200px; height: 100px; text-align: center; vertical-align: middle; position: fixed; top: 50%; left: 50%; margin: -50px 0 0 -100px; background: rgba(255, 255, 255, 0.5); z-index: 99999; line-height: 100px;"><img src="/themes/admin/gfx/ajax-loader.gif" alt=""></div>');
+
+    	$('form').on('submit', function(event) {
+        	$('body').append($loader);
+    	});
+    	$('a').on('click', function(event) {
+        	$('body').append($loader);
+    	});
+    });
+</script>
+ 
