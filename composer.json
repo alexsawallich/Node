@@ -1,0 +1,24 @@
+{
+	"name": "alexsawallich/Node",
+	"description": "A Zend-Framework-Module to make all frontend contents (comming from different modules) available via the same interface.",
+	"type": "library",
+	"keywords": [
+		"zf",
+		"zend",
+		"content",
+		"management",
+		"node",
+		"interface"
+	],
+	"homepage": "https://github.com/alexsawallich/Node",
+    "authors": [
+        {
+            "name": "Alex Sawallich",
+            "email": "kontakt@alexsawallich.de",
+            "homepage": "http://alex.tools"
+        }
+    ],
+    "require": {
+    	"php": ">=5.4.0"
+    }
+}
