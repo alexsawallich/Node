@@ -1,5 +1,5 @@
 {
-	"name": "alexsawallich/Node",
+	"name": "alexsawallich/node",
 	"description": "A Zend-Framework-Module to make all frontend contents (comming from different modules) available via the same interface.",
 	"type": "library",
 	"keywords": [
