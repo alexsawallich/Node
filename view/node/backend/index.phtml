@@ -77,7 +77,7 @@
                             <small class="text-muted"><?php echo $this->escapehtml($node->getNodeRoute()); ?></small>
                         </td>
                         <?php if (true == $enableAccessCounter): ?>
-                            <td class="text-right"><?php echo $this->escapehtml($node->getNodeAccessCount()); ?></td>
+                            <td class="text-right"><?php echo $this->escapehtml((null == $node->getNodeAccessCount()) ? 0 : $node->getNodeAccessCount()); ?></td>
                             <td class="text-right">
                                 <?php if (null != $node->getNodeAccessDate()): ?>
                                     <?php echo $this->dateformat(new \DateTime($node->getNodeAccessDate()), 2, 2); ?>
