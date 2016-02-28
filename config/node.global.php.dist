@@ -23,5 +23,23 @@ return [
          * @var boolean
          */
         'enable_access_counter' => true,
+        
+        /**
+         * Name of the db-adapter, which is registered in the service-manager.
+         * 
+         * Defaults to 'Zend\Db\Adapter\Adapter'.
+         * 
+         * @var string
+         */
+        'node_db_adapter_name' => 'Zend\Db\Adapter\Adapter',
+        
+        /**
+         * Name of the table within the database, where nodes should be stored.
+         * 
+         * Defaults to 'node'.
+         * 
+         * @var string
+         */
+        'node_table_name' => 'node',
     ]
 ];

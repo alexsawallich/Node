@@ -19,7 +19,8 @@
         }
     ],
     "require": {
-    	"php": ">=5.4.0"
+    	"php": ">=5.4.0",
+		"zf-commons/zfc-admin" : "=v0.2.1"
     },
     "autoload": {
         "psr-0": {

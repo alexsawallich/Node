@@ -21,10 +21,14 @@ class NodeTableFactory implements FactoryInterface
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        $table = 'node';
-        $adapter = $serviceLocator->get('\Zend\Db\Adapter\Adapter');
+        $options = $serviceLocator->get('NodeOptions');
+        
+        $table = $options->getNodeTableName();
+        $adapter = $serviceLocator->get($options->getNodeDbAdapterName('\Zend\Db\Adapter\Adapter'));
+        
         $hydrator = $serviceLocator->get('NodeModelHydrator');
         $resultSet = new NodeSet($hydrator, ['content' => new ContentNode(), 'mvc' => new MvcNode(), 'redirect' => new RedirectNode()]);
+        
         return new NodeTable($table, $adapter, null, $resultSet);
     }
 }

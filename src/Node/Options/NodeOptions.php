@@ -12,6 +12,10 @@ class NodeOptions extends AbstractOptions
     
     protected $enable_meta_tags;
     
+    protected $node_db_adapter_name;
+    
+    protected $node_table_name;
+    
     public function getEnableAccessCounter()
     {
         return $this->enable_access_counter;
@@ -24,7 +28,7 @@ class NodeOptions extends AbstractOptions
     
     /**
      * 
-     * @return unknown
+     * @return boolean
      */
     public function getEnableMetaTags()
     {
@@ -33,10 +37,30 @@ class NodeOptions extends AbstractOptions
     
     /**
      * 
-     * @param unknown $enable_meta_tags
+     * @param boolean $enable_meta_tags
      */
     public function setEnableMetaTags($enable_meta_tags)
     {
         $this->enable_meta_tags = $enable_meta_tags;
+    }
+    
+    public function getNodeTableName()
+    {
+        return $this->node_table_name;
+    }
+    
+    public function setNodeTableName($name)
+    {
+        $this->node_table_name = $name;
+    }
+    
+    public function getNodeDbAdapterName()
+    {
+        return $this->node_db_adapter_name;
+    }
+    
+    public function setNodeDbAdapterName($name)
+    {
+        $this->node_db_adapter_name = $name;
     }
 }
