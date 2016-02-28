@@ -68,46 +68,54 @@
                 </tr>
             </thead>
             <tbody>
-                <?php foreach($nodes as $node): /* @var $node \Node\Entity\NodeInterface */ ?>
-                    <tr>
-                        <td class="text-center"><input type="checkbox" name="id[]" value="<?php echo $node->getNodeId(); ?>"></td>
-                        <td class="text-right"><?php echo $this->escapehtml($node->getNodeId()); ?></td>
-                        <td>
-                            <a href="<?php echo $this->basepath().$this->url('zfcadmin/node/edit', ['id' => $node->getNodeId()]); ?>"><strong><?php echo $this->escapehtml($node->getNodeName()); ?></strong></a><br>
-                            <small class="text-muted"><?php echo $this->escapehtml($node->getNodeRoute()); ?></small>
-                        </td>
-                        <?php if (true == $enableAccessCounter): ?>
-                            <td class="text-right"><?php echo $this->escapehtml((null == $node->getNodeAccessCount()) ? 0 : $node->getNodeAccessCount()); ?></td>
-                            <td class="text-right">
-                                <?php if (null != $node->getNodeAccessDate()): ?>
-                                    <?php echo $this->dateformat(new \DateTime($node->getNodeAccessDate()), 2, 2); ?>
-                                <?php else: ?>
-                                    <span class="text-muted"><?php echo $this->translate('never'); ?></span>
+                <?php if(count($nodes) > 0): ?>
+                    <?php foreach($nodes as $node): /* @var $node \Node\Entity\NodeInterface */ ?>
+                        <tr>
+                            <td class="text-center"><input type="checkbox" name="id[]" value="<?php echo $node->getNodeId(); ?>"></td>
+                            <td class="text-right"><?php echo $this->escapehtml($node->getNodeId()); ?></td>
+                            <td>
+                                <a href="<?php echo $this->basepath().$this->url('zfcadmin/node/edit', ['id' => $node->getNodeId()]); ?>"><strong><?php echo $this->escapehtml($node->getNodeName()); ?></strong></a><br>
+                                <small class="text-muted"><?php echo $this->escapehtml($node->getNodeRoute()); ?></small>
+                            </td>
+                            <?php if (true == $enableAccessCounter): ?>
+                                <td class="text-right"><?php echo $this->escapehtml((null == $node->getNodeAccessCount()) ? 0 : $node->getNodeAccessCount()); ?></td>
+                                <td class="text-right">
+                                    <?php if (null != $node->getNodeAccessDate()): ?>
+                                        <?php echo $this->dateformat(new \DateTime($node->getNodeAccessDate()), 2, 2); ?>
+                                    <?php else: ?>
+                                        <span class="text-muted"><?php echo $this->translate('never'); ?></span>
+                                    <?php endif; ?>
+                                </td>
+                            <?php endif; ?>
+                            <td>
+                                <?php echo $typeMap[$node->getNodeType()]; ?>
+                                <?php if('content' == $node->getNodeType()): ?>
+                                    <br><small class="text-muted"><?php echo sprintf($this->translate('ID: %s'), $node->getContentId()); ?></small>
                                 <?php endif; ?>
                             </td>
-                        <?php endif; ?>
-                        <td>
-                            <?php echo $typeMap[$node->getNodeType()]; ?>
-                            <?php if('content' == $node->getNodeType()): ?>
-                                <br><small class="text-muted"><?php echo sprintf($this->translate('ID: %s'), $node->getContentId()); ?></small>
-                            <?php endif; ?>
-                        </td>
-                        <td class="text-right">
-                            <div class="btn-group text-left pull-right">
-                                <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
-                                    <i class="glyphicon glyphicon-cog"></i>
-                                    <span class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu">
-                                    <li><a href="<?php echo $this->basepath().$this->url('zfcadmin/node/edit', ['id' => $node->getNodeId()]); ?>"><?php echo $this->translate('Edit'); ?></a></li>
-                                    <?php if ('content' != $node->getNodeType()): ?>
-                                        <li><a href="<?php echo $this->basepath().$this->url('zfcadmin/node/delete', ['id' => $node->getNodeId()]); ?>"><?php echo $this->translate('Delete'); ?></a></li>
-                                    <?php endif; ?>
-                                </ul>
-                            </div>
+                            <td class="text-right">
+                                <div class="btn-group text-left pull-right">
+                                    <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
+                                        <i class="glyphicon glyphicon-cog"></i>
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="<?php echo $this->basepath().$this->url('zfcadmin/node/edit', ['id' => $node->getNodeId()]); ?>"><?php echo $this->translate('Edit'); ?></a></li>
+                                        <?php if ('content' != $node->getNodeType()): ?>
+                                            <li><a href="<?php echo $this->basepath().$this->url('zfcadmin/node/delete', ['id' => $node->getNodeId()]); ?>"><?php echo $this->translate('Delete'); ?></a></li>
+                                        <?php endif; ?>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <tr>
+                        <td colspan="<?php echo (true == $enableAccessCounter) ? 7 : 5; ?>">
+                            <?php echo $this->translate('There are no nodes available yet or your filter criteria didn\'t match any nodes.'); ?>
                         </td>
                     </tr>
-                <?php endforeach; ?>
+                <?php endif; ?>
             </tbody>
         </table>
         <div class="panel-body clearfix">
