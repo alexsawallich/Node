@@ -90,7 +90,7 @@
                             <td>
                                 <?php echo $typeMap[$node->getNodeType()]; ?>
                                 <?php if('content' == $node->getNodeType()): ?>
-                                    <br><small class="text-muted"><?php echo sprintf($this->translate('ID: %s'), $node->getContentId()); ?></small>
+                                    <br><small class="text-muted"><?php echo sprintf($this->translate('ID: %s'), $node->getNodeContentId()); ?></small>
                                 <?php endif; ?>
                             </td>
                             <td class="text-right">

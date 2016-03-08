@@ -12,16 +12,16 @@ class ContentNode extends MvcNode
      * 
      * @var string
      */
-    protected $content_id;
+    protected $node_content_id;
     
     /**
      * Returns the identifying string of the related content.
      * 
      * @return string
      */
-    public function getContentId()
+    public function getNodeContentId()
     {
-        return $this->content_id;
+        return $this->node_content_id;
     }
     
     /**
@@ -40,9 +40,9 @@ class ContentNode extends MvcNode
      * @param string $id
      * @return \Node\Entity\ContentNode
      */
-    public function setContentId($id)
+    public function setNodeContentId($id)
     {
-        $this->content_id = $id;
+        $this->node_content_id = $id;
         return $this;
     }
 }

@@ -1,6 +1,6 @@
 CREATE TABLE `node` (
   `node_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `content_id` varchar(255) DEFAULT NULL,
+  `node_content_id` varchar(255) DEFAULT NULL,
   `node_access_count` int(10) unsigned DEFAULT '0',
   `node_access_date` datetime DEFAULT NULL,
   `node_meta_description` varchar(255) DEFAULT NULL,
