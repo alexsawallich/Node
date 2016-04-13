@@ -23,7 +23,7 @@ class NodeRouteCacheFactory implements FactoryInterface
                 'name' => 'filesystem',
                 'options' => [
                     'ttl' => 3600,
-                    'cache_dir' => './data/cache'
+                    'cache_dir' => './data/cache/node/'
                 ]
             ]
         ]);
