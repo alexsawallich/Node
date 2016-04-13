@@ -6,7 +6,7 @@ It brings a layer into your Zend-Framework application to create url-rewrites (r
 
 The module ships with 3 types of nodes: MVC-Nodes, Content-Nodes and Redirect-Nodes.
 
-**MVC-Nodes** can be created from the backend (required ZfcAdmin) of the module. The configuration-form allows you
+**MVC-Nodes** can be created from the backend (requires ZfcAdmin) of the module. The configuration-form allows you
 to specify the url-path this node should be available at. In dropdowns you select the controller (all controllers in
 your application are retrieved from the service-manager) and the action within this controller. Optionally you can provide
 further parameters which will be passed 1:1 into the router. Also optionally you can provide an original-url-path if
@@ -43,7 +43,7 @@ There are some other features, which can be dis-/enabled in the config-file.
     application. While doing that, the router-config is cached, so in the next request it's not necessary to fetch all nodes again.
 * **Translatable**. All strings within the module are wrapped with the `translate()`-method from the translator-instance.
 * **Rich usage of events**. This module triggers events at certain points, which gives you the chance of extending nodes with additional fields for example.
-    Think of nodes as a central place to store information, that is relevant for all your content. Maybe you want to have a different header-inage for each
+    Think of nodes as a central place to store information, that is relevant for all your content. Maybe you want to have a different header-image for each
     of your nodes - no problem. Through the triggered events you can easily modify the backend-forms or hook into the process of saving the nodes into the
     database.
     
